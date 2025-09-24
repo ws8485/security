@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/cws
+    username: root
+    password: 1q2w3e4r!!
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+
+jwt:
+  secret: aN7r9Qx6T!pZ2dL8wC5vY1sK7mB4eG0hR3tU9jL2qW6xZ8cV5nM1aD7fP4sH0kR2
+  access-token-validity-seconds: 900
+  refresh-token-validity-seconds: 2592000
