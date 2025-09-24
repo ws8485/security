@@ -1,0 +1,85 @@
+# OS/공통
+.DS_Store
+Thumbs.db
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/
+gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
+# 위 두 파일은 추적 대상이므로, 아래에서 다시 강제로 포함
+!gradle/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# 소스 내 하위 build 폴더 예외적으로 포함하지 않음(일반적으로 하위 build도 산출물이므로 무시 유지)
+# 필요 시 아래 주석 해제하여 특정 경로만 포함 예외 가능
+# !**/src/main/**/build/
+# !**/src/test/**/build/
+
+# STS / Eclipse
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+bin/
+# 일반적으로 src 하위 bin도 산출물이므로 무시 유지
+# 필요 시 특정 경로만 예외
+# !**/src/main/**/bin/
+# !**/src/test/**/bin/
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+# 일반적으로 out도 산출물이므로 무시 유지
+# !**/src/main/**/out/
+# !**/src/test/**/out/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+
+# 로그/임시
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Node/프론트(있을 경우)
+node_modules/
+dist/
+build/
+
+# 프로젝트 루트에서 반드시 추적할 파일들(무시하지 않도록 예외)
+!.gitattributes
+!.gitignore
+!/gradlew
+!/gradlew.bat
+!/settings.gradle
+!/settings.gradle.kts
+!/build.gradle
+!/build.gradle.kts
+!/gradle/
+!/gradle/wrapper/gradle-wrapper.jar
+!/gradle/wrapper/gradle-wrapper.properties
+
+# 언어별 캐시/산출물(자바/코틀린)
+*.class
+*.jar
+*.war
+*.ear
+*.jpi
+*.hprof
