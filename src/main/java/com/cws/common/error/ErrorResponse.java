@@ -14,57 +14,57 @@ public final class ErrorResponse {
 	private final Instant timestamp; // UNIX epoch millis
 	private final String path; // 요청 경로
 
+
 	/**
 	 * ErrorCode의 기본 메시지를 사용하여 응답을 생성합니다.
 	 */
 	public static ErrorResponse of(ErrorCode errorCode, String traceId, String path) {
-		Objects.requireNonNull(errorCode, "errorCode must not be null");
-		return new ErrorResponse(errorCode.name(), errorCode.getDefaultMessage(), traceId, Instant.now(),
-				path);
+	    Objects.requireNonNull(errorCode, "errorCode must not be null");
+	    return new ErrorResponse(
+	            errorCode.getCode(),
+	            errorCode.getDefaultMessage(),
+	            safe(traceId),
+	            Instant.now(),
+	            safe(path)
+	    );
 	}
-
 	/**
 	 * 커스텀 메시지로 기본 메시지를 대체하여 응답을 생성합니다. overrideMessage가 null/blank이면 기본 메시지를 사용합니다.
 	 */
 	public static ErrorResponse of(ErrorCode errorCode, String overrideMessage, String traceId, String path) {
-		Objects.requireNonNull(errorCode, "errorCode must not be null");
-		String msg = (overrideMessage == null || overrideMessage.isBlank()) ? errorCode.getDefaultMessage()
-				: overrideMessage;
-		return new ErrorResponse(errorCode.name(), msg, traceId, Instant.now(), path);
+	    Objects.requireNonNull(errorCode, "errorCode must not be null");
+	    String msg = (overrideMessage == null || overrideMessage.isBlank())
+	            ? errorCode.getDefaultMessage()
+	            : overrideMessage;
+	    return new ErrorResponse(
+	            errorCode.getCode(),
+	            msg,
+	            safe(traceId),
+	            Instant.now(),
+	            safe(path)
+	    );
 	}
 
 	private ErrorResponse(String code, String message, String traceId, Instant timestamp, String path) {
-		this.code = code;
-		this.message = message;
-		this.traceId = traceId;
-		this.timestamp = timestamp;
-		this.path = path;
+	    this.code = code;
+	    this.message = message;
+	    this.traceId = traceId;
+	    this.timestamp = timestamp;
+	    this.path = path;
 	}
 
-	public String getCode() {
-		return code;
-	}
+	public String getCode() { return code; }
+	public String getMessage() { return message; }
+	public String getTraceId() { return traceId; }
+	public Instant getTimestamp() { return timestamp; }
+	public String getPath() { return path; }
 
-	public String getMessage() {
-		return message;
-	}
-
-	public String getTraceId() {
-		return traceId;
-	}
-
-	public Instant getTimestamp() {
-		return timestamp;
-	}
-
-	public String getPath() {
-		return path;
-	}
+	private static String safe(String s) { return s == null ? "" : s; }
 
 	@Override
 	public String toString() {
-		return "ErrorResponse [code=" + code + ", message=" + message + ", traceId=" + traceId + ", timestamp="
-				+ timestamp + ", path=" + path + "]";
+	    return "ErrorResponse [code=" + code + ", message=" + message + ", traceId=" + traceId
+	            + ", timestamp=" + timestamp + ", path=" + path + "]";
 	}
 
 }
