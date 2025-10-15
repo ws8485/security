@@ -1,6 +1,11 @@
 server:
   port: 8080
-
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+      
 spring:
   datasource:
     url: jdbc:mariadb://localhost:3306/cws
@@ -9,8 +14,12 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      # ddl-auto: update
+      ddl-auto: none
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
   h2:
     console:
       enabled: true
@@ -19,6 +28,11 @@ jwt:
   secret: aN7r9Qx6T!pZ2dL8wC5vY1sK7mB4eG0hR3tU9jL2qW6xZ8cV5nM1aD7fP4sH0kR2
   access-token-validity-seconds: 900
   refresh-token-validity-seconds: 2592000
-  issuer: cws-auth
-  audience: cws-api
-  kid: v1
+    
+logging:
+  level:
+    root: info
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
+    org.hibernate.type.descriptor.sql: trace
+  

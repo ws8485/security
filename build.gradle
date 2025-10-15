@@ -13,6 +13,8 @@ java {
     }
 }
 
+tasks.named('bootRun') { jvmArgs = ['-Dfile.encoding=UTF-8'] }
+
 repositories {
     mavenCentral()
 }
