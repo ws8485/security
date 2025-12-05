@@ -8,6 +8,7 @@ public enum ErrorCode {
     VALIDATION_FAILED("VALIDATION_FAILED", HttpStatus.BAD_REQUEST, "입력값 검증에 실패했습니다."),
     INVALID_PARAMETER("INVALID_PARAMETER", HttpStatus.BAD_REQUEST, "요청 파라미터가 올바르지 않습니다."),
     DUPLICATE_REQUEST("DUPLICATE_REQUEST", HttpStatus.BAD_REQUEST, "중복된 요청입니다."),
+    DUPLICATE_REQUEST2("DUPLICATE_REQUEST", HttpStatus.BAD_REQUEST, "중복된 요청입니다."),
 
     // 401 Unauthorized
     UNAUTHORIZED("UNAUTHORIZED", HttpStatus.UNAUTHORIZED, "인증이 필요합니다."),
