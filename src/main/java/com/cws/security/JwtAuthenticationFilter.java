@@ -1,10 +1,10 @@
 package com.cws.security;
 
-import com.cws.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,12 +17,10 @@ import java.io.IOException;
 
 /**
  * JWT를 이용해 요청당 한 번 인증 컨텍스트를 설정하는 필터.
- *
  * 동작 개요:
  * - Authorization 헤더 파싱 → "Bearer " 접두사 확인
  * - validateOrThrow로 토큰 검증(만료/서명/형식 오류를 구분해 예외로 위임)
  * - 컨텍스트에 인증이 아직 없다면 사용자 정보 로드 후 인증 주체 설정
- *
  * 보안 주의:
  * - validateOrThrow는 만료/서명/클레임 검증을 수행하며 실패 시 커스텀 예외를 던집니다.
  * - 전역 예외 처리기에서 해당 예외를 401로 표준화하여 응답하세요.
@@ -45,11 +43,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	/**
 	 *
 	 * 요청마다 한 번 실행되어 JWT 기반 인증을 시도합니다.
-	 *
 	 * 객체 설정
 	 */
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain)
             throws ServletException, IOException {
 
         // 1) Authorization 헤더에서 Bearer 토큰 추출

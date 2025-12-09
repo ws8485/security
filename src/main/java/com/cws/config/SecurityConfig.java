@@ -2,7 +2,7 @@ package com.cws.config;
 
 import com.cws.security.JwtAuthenticationFilter;
 import com.cws.security.handler.RestAuthenticationEntryPoint;
-import com.cws.service.CustomUserDetailsService;
+import com.cws.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +13,8 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,9 +37,8 @@ import java.util.List;
 public class SecurityConfig {
 	/**
 	 * 필수 보안 컴포넌트 주입.
-	 *
-	 * @param jwtAuthenticationFilter JWT를 파싱/검증하여 SecurityContext에 인증 주체를 설정하는 필터
-	 * @param userDetailsService      사용자 계정 조회 서비스(로그인/권한 부여에 사용)
+	 *  jwtAuthenticationFilter JWT를 파싱/검증하여 SecurityContext에 인증 주체를 설정하는 필터
+	 *  userDetailsService      사용자 계정 조회 서비스(로그인/권한 부여에 사용)
 	 */
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	private final CustomUserDetailsService userDetailsService;
@@ -56,9 +57,9 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http,RestAuthenticationEntryPoint restAuthenticationEntryPoint) throws Exception {
 		http
 				// CSRF 비활성화: 세션을 사용하지 않는 JWT 기반이므로 비활성화
-				.csrf(csrf -> csrf.disable())
+				.csrf(AbstractHttpConfigurer::disable)
 				// 헤더 조정: H2 콘솔 사용 시 frameOptions 해제(미사용 시 제거 권장)
-				.headers(h -> h.frameOptions(f -> f.disable()))
+				.headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
 				// 세션 정책: STATELESS로 지정하여 서버 세션 저장소 미사용
 				.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				// 인가 규칙:
@@ -107,13 +108,13 @@ public class SecurityConfig {
 	}
 
 	/**
-	 * CORS 정책 구성. 허용 Origin/Method/Header를 환경 변수/설정으로 주입받아 운영-개발 분리 용이 자격
-	 * 증명(쿠키/Authorization 헤더) 허용 Authorization 헤더를 클라이언트에서 읽을 수 있도록 노출 파라미터 기본값(미지정
-	 * 시): allowed-origins: http://localhost:3000 allowed-methods:
-	 * GET,POST,PUT,DELETE,OPTIONS allowed-headers: Authorization,Content-Type 운영
-	 * 주의: 와일드카드(*) Origin과 allowCredentials(true)는 함께 사용할 수 없음. 실제 도메인만 명시하여 최소 권한의
-	 * 원칙 적용 권장.
-	 */
+     * CORS 정책 구성. 허용 Origin/Method/Header를 환경 변수/설정으로 주입받아 운영-개발 분리 용이 자격
+     * 증명(쿠키/Authorization 헤더) 허용 Authorization 헤더를 클라이언트에서 읽을 수 있도록 노출 파라미터 기본값(미지정
+     * 시): allowed-origins: <a href="http://localhost:3000">...</a> allowed-methods:
+     * GET,POST,PUT,DELETE,OPTIONS allowed-headers: Authorization,Content-Type 운영
+     * 주의: 와일드카드(*) Origin과 allowCredentials(true)는 함께 사용할 수 없음. 실제 도메인만 명시하여 최소 권한의
+     * 원칙 적용 권장.
+     */
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource(
 			@Value("${cors.allowed-origins:http://localhost:3000}") List<String> allowedOrigins,

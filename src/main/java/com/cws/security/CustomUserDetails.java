@@ -1,4 +1,4 @@
-package com.cws.service;
+package com.cws.security;
 
 import com.cws.entity.Role;
 import com.cws.entity.User;
@@ -13,10 +13,8 @@ import java.util.stream.Collectors;
 /**
  *
  * 스프링 시큐리티 인증 주체(UserDetails) 구현체.
- *
  * 도메인 엔티티(User)를 감싸서 시큐리티가 요구하는 형태로 노출합니다. 권한(roles)을 SimpleGrantedAuthority로
  * 변환하여 권한 검사(@PreAuthorize 등)에 사용합니다. 운영/보안 참고:
- *
  * Role 네이밍 컨벤션(예: "ROLE_ADMIN")을 시큐리티 설정(hasRole/hasAuthority)과 일치시켜야 합니다. 계정
  * 상태 플래그(활성/잠금/만료)를 정책에 맞게 연동하면 보안 사고를 줄일 수 있습니다.
  */
