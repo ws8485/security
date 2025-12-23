@@ -3,7 +3,6 @@ package com.cws.config;
 import com.cws.security.JwtAuthenticationFilter;
 import com.cws.security.handler.RestAuthenticationEntryPoint;
 import com.cws.security.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -116,21 +115,18 @@ public class SecurityConfig {
      * 원칙 적용 권장.
      */
 	@Bean
-	public CorsConfigurationSource corsConfigurationSource(
-			@Value("${cors.allowed-origins:http://localhost:3000}") List<String> allowedOrigins,
-			@Value("${cors.allowed-methods:GET,POST,PUT,DELETE,OPTIONS}") List<String> allowedMethods,
-			@Value("${cors.allowed-headers:Authorization,Content-Type}") List<String> allowedHeaders) {
+	public CorsConfigurationSource corsConfigurationSource(CorsProperties props) {
 
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowedOrigins(allowedOrigins);
-		config.setAllowedMethods(allowedMethods);
-		config.setAllowedHeaders(allowedHeaders);
+		config.setAllowedOrigins(props.getAllowedOrigins());
+		config.setAllowedMethods(props.getAllowedMethods());
+		config.setAllowedHeaders(props.getAllowedHeaders());
 		config.setAllowCredentials(true);
 		config.setExposedHeaders(List.of("Authorization"));
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		// 모든 경로에 동일 CORS 정책 적용
 		source.registerCorsConfiguration("/**", config);
 		return source;
 	}
+
 }
